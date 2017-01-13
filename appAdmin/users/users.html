@@ -1,0 +1,294 @@
+
+<div id="users" class="content-box-large">
+
+<!--     <h1>Usuarios <span><a href ng-click="usersCtrl.openAddNew()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></span></h1> -->
+    <h1>Usuarios</h1>
+
+
+
+    <div style="overflow-x:scroll">
+        <table st-table="usersCtrl.users" st-pipe="usersCtrl.callServer" class="table table-striped">
+            <thead>
+
+            <tr>
+                <th colspan="1"><h4>Busqueda:</h4></th>
+                <th></th>
+                <th><input class="form-control input-table" st-search="firstName"/></th>
+                <th><input class="form-control input-table" st-search="lastName"/></th>
+                <th><input class="form-control input-table" st-search="email"/></th>
+                <th><input class="form-control input-table" st-search="phone"/></th>
+                <th><input class="form-control input-table" st-search="country"/></th>
+            </tr>
+
+            <tr>
+                <th></th>
+                <th>Referencia</th>
+                <th st-sort="firstName">Nombre</th>
+                <th st-sort="lastName">Apellido</th>
+                <th st-sort="email">Email</th>
+                <th st-sort="phone">Teléfono</th>
+                <th st-sort="country">País</th>
+                <th st-sort="createdAt">Fecha de registro</th>
+                <th st-sort="admin">Administrador</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in usersCtrl.users">
+                <td><input name="button" type="button" value="Editar" class="btn btn-xs btn-success" ng-click="usersCtrl.openEdit(row)"/></td>
+                <td>{{row.objectId}}</td>
+                <td>{{row.firstName | capitalize}}</td>
+                <td>{{row.lastName | capitalize}}</td>
+                <td>{{row.email}}</td>
+                <td>{{row.phone}}</td>
+                <td>{{row.country | capitalize}}</td>
+                <td>{{row.createdAt | date : "dd/MM/yyyy"}}</td>
+                <td class="text-center" ><span ng-show="row.admin"><i class="fa fa-check-circle colorExporta fa-2x"></i></span> <span ng-show="!row.admin"><i class="fa fa-times-circle-o colorRed fa-2x"></i></span></td>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-center" st-pagination="" st-items-by-page="30" colspan="4">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+
+</div>
+
+
+<!-- *** Edit modal *** -->
+<div class="modal fade" id="edit-user-modal" tabindex="-1" role="dialog" aria-labelledby="Edit" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <form name="editForm" ng-submit="usersCtrl.submitEdit()" action="javascript:void(0);">
+
+
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="editAuto">Información del usuario referencia: <strong>{{usersCtrl.editUser.objectId}}</strong></h4>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="edit-user-firstName">Nombre</label>
+                                    <input ng-model="usersCtrl.editUser.firstName" type="text" class="form-control" id="edit-user-firstName" autocapitalize="none" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="edit-user-lastName">Apellido</label>
+                                    <input ng-model="usersCtrl.editUser.lastName" type="text" class="form-control" id="edit-user-lastName" autocapitalize="none" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="edit-user-email">Email</label>
+                                    <input ng-model="usersCtrl.editUser.email" type="email" class="form-control" id="edit-user-email" required>
+                                </div>
+                            </div> 
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="edit-user-phone">Teléfono</label>
+                                    <input ng-model="usersCtrl.editUser.phone" type="text" class="form-control" id="edit-user-phone" autocapitalize="none" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="edit-user-country">País</label>
+                                    <select id="edit-user-country" title="País" class="form-control" id="country" ng-model="usersCtrl.editUser.country" ng-options="country for country in usersCtrl.countries">
+                                       <option value="" disabled selected>{{usersCtrl.editUser.country}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+<!--                             <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="edit-user-password">Contraseña</label>
+                                    <input ng-model="usersCtrl.editUser.password" type="password" class="form-control" id="edit-user-password" placeholder="xxxxxxx" autocapitalize="none" required>
+                                </div>
+                            </div>
+ -->
+
+                            <div class="col-md-12">
+
+                                <hr>
+
+                                <div class="text-center">
+
+                                    <button ng-hide="usersCtrl.editingUser" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar Cambios</button>
+                                    <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="usersCtrl.editingUser"></i>
+                                </div>
+                            </div>       
+                        </div>
+
+                    
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- *** End of edit modal *** -->
+
+
+
+
+<!-- *** New modal *** -->
+<div class="modal fade" id="add-new-user-modal" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <form name="addNewForm" ng-submit="usersCtrl.submitNew()" action="javascript:void(0);">
+
+
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="newTire">Cargar Nuevo Caucho</h4>
+                </div>
+
+
+                <div class="modal-body">
+
+                        <div class="row">
+<!-- 
+                            <div class="colo-md-12 text-center">
+
+                                <div class="form-group">
+                                    <p>Estatus</p>
+                                    <label class="switch">
+                                      <input id="new-tire-status" ng-model="usersCtrl.newTire.active" type="checkbox">
+                                      <div class="slider round"></div>
+                                    </label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="new-tire-make">Marca</label>
+                                    <input ng-model="usersCtrl.newTire.make" type="text" class="form-control" id="new-tire-make"autocapitalize="none" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="new-tire-model">Modelo</label>
+                                    <input ng-model="usersCtrl.newTire.model" type="text" class="form-control" id="new-tire-model"autocapitalize="none" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="new-tire-width">Ancho</label>
+                                    <input ng-model="usersCtrl.newTire.width" type="number" class="form-control" id="new-tire-width" required>
+                                </div>
+                            </div> 
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="new-tire-height">Sección</label>
+                                    <input ng-model="usersCtrl.newTire.height" type="number" class="form-control" id="new-tire-height" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="new-tire-rin">Diametro (Rin)</label>
+                                    <input ng-model="usersCtrl.newTire.diameter" type="number" class="form-control" id="new-tire-rin" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="new-tire-type">Tipo</label>
+                                    <select id="new-tire-type" title="Tipe" class="form-control" id="type" ng-model="usersCtrl.newTire.type" ng-options="type for type in usersCtrl.types" required>
+                                        <option value="" disabled selected>Selecciona</option> 
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="new-tire-price">Precio ($)</label>
+                                    <input ng-model="usersCtrl.newTire.price" type="number" class="form-control" id="new-tire-price" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="new-tire-description">Descripción</label>
+                                    <textarea style="height: 120px;" ng-model="usersCtrl.newTire.description" class="form-control" id="new-tire-description" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div style="margin:auto; padding-bottom:20px;" class="input-group">
+                                    <p class="text-center">Selecciona una imagen principal</p>
+
+
+                                    <img ng-hide="usersCtrl.newTire.newMainImage" style="margin:auto;" class="img-responsive main-image" src=""/>
+
+                                    <img class="img-responsive" class="img-responsive" style="margin:auto;" ngf-src="usersCtrl.newTire.newMainImage" />
+
+                                    
+                                    <input type="file" style="margin:auto" ngf-select ng-model="usersCtrl.newTire.newMainImage" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}"></input>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+
+
+                                <div class="text-center">
+                                    <p>Selecciona imagenes descriptivas <span style="font-style: italic;">(Selecciona una o varias a la vez)</span></p>
+
+                                    <input style="margin:auto" type="file" ngf-select ng-model="usersCtrl.newTire.imagesFiles" name="imageFiles" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}" ngf-multiple="true"></input>
+
+                                </div>
+
+
+                                <div class="row" ng-repeat="image in usersCtrl.newTire.imagesFiles">
+
+                                    <div class="images">
+
+                                        <img class="img-responsive" ngf-src="image"/>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+ 
+
+                            <div class="col-md-12">
+
+                                <hr>
+
+                                <div class="text-center">
+
+                                    <button ng-hide="usersCtrl.creatingTire" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
+                                    <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="usersCtrl.creatingTire"></i>
+                                </div>
+                            </div>   -->     
+                        </div>
+
+                    
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- *** End of new modal *** -->
+

@@ -1,0 +1,591 @@
+
+<div id="autos" class="content-box-large">
+
+    <h1>Carros <span><a href ng-click="autosCtrl.openAddNew()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></span></h1>
+
+
+
+    <div style="overflow-x:scroll">
+        <table st-table="autosCtrl.autos" st-pipe="autosCtrl.callServer" class="table table-striped">
+            <thead>
+
+            <tr>
+                <th colspan="1"><h4>Busqueda:</h4></th>
+                <th></th>
+                <th></th>
+                <th><input class="form-control input-table" st-search="make"/></th>
+                <th><input class="form-control input-table" st-search="year"/></th>
+                <th><input class="form-control input-table" st-search="model"/></th>
+
+            </tr>
+
+            <tr>
+                <th></th>
+                <th>Referencia</th>
+                <th st-sort="active">Estatus</th>
+                <th st-sort="make">Marca</th>
+                <th st-sort="year">Año</th>
+                <th st-sort="model">Modelo</th>
+                <th st-sort="modelDetail">Modelo (Detalle)</th>
+                <th st-sort="mileage">Millage</th>
+                <th st-sort="engine">Motor</th>
+                <th st-sort="transmission">Transmision</th>
+                <th st-sort="type">Tipo</th>
+                <th st-sort="condition">Condición</th>
+                <th st-sort="exteriorColor">Color exterior</th>
+                <th st-sort="interiorColor">Color interior</th>
+                <th st-sort="reservationPrice">Reserva ($)</th>
+                <th st-sort="price">Precio Base ($)</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in autosCtrl.autos">
+                <td><input name="button" type="button" value="Editar" class="btn btn-xs btn-primary" ng-click="autosCtrl.openEdit(row)"/></td>
+                <td>{{row.objectId}}</td>
+                <td class="text-center" ><span ng-show="row.active"><i class="fa fa-check-circle colorGreen fa-2x"></i></span> <span ng-show="!row.active"><i class="fa fa-times-circle-o colorRed fa-2x"></i></span></td>
+                <td>{{row.make | capitalize}}</td>
+                <td>{{row.year}}</td>
+                <td>{{row.model | capitalize}}</td>
+                <td>{{row.modelDetail | capitalize}}</td>
+                <td>{{row.mileage}}</td>
+                <td>{{row.engine}}</td>
+                <td>{{row.transmission}}</td>
+                <td>{{row.type | capitalize}}</td>
+                <td>{{row.condition}}</td>
+                <td>{{row.exteriorColor | capitalize}}</td>
+                <td>{{row.interiorColor | capitalize}}</td>
+                <td>{{row.reservationPrice | number}}</td>
+                <td>{{row.price | number}}</td>
+
+            </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-center" st-pagination="" st-items-by-page="30" colspan="4">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+
+</div>
+
+
+<!-- *** Edit modal *** -->
+<div class="modal fade" id="edit-auto-modal" tabindex="-1" role="dialog" aria-labelledby="Edit" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <form name="editForm" ng-submit="autosCtrl.submitEdit()" action="javascript:void(0);">
+
+
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="editAuto">Estatus e información del carro referencia: <strong>{{autosCtrl.editAuto.objectId}}</strong></h4>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="col-md-12 text-center">
+
+                                    <div class="form-group">
+                                        <p>Estatus</p>
+                                        <label class="switch">
+                                          <input id="edit-auto-status" ng-model="autosCtrl.editAuto.active" type="checkbox">
+                                          <div class="slider round"></div>
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-make">Marca</label>
+                                        <input ng-model="autosCtrl.editAuto.make" type="text" class="form-control" id="edit-auto-make"autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-year">Año</label>
+                                        <input ng-model="autosCtrl.editAuto.year" type="number" class="form-control" id="edit-auto-year" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-model">Modelo</label>
+                                        <input ng-model="autosCtrl.editAuto.model" type="text" class="form-control" id="edit-auto-model" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-model-detail">Modelo Detalle</label>
+                                        <input ng-model="autosCtrl.editAuto.modelDetail" type="text" class="form-control" id="eddit-auto-model-detail" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-mileage">Millage</label>
+                                        <input ng-model="autosCtrl.editAuto.mileage" type="number" class="form-control" id="edit-auto-mileage" required>
+                                    </div>
+                                </div> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-engine">Motor</label>
+                                        <input ng-model="autosCtrl.editAuto.engine" type="text" class="form-control" id="edit-auto-engine" autocapitalize="none" required>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-transmission">Transmisión</label>
+                                        <input ng-model="autosCtrl.editAuto.transmission" type="text" class="form-control" id="edit-auto-transmission" autocapitalize="none" required>
+                                    </div>
+                                </div>  
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-type">Tipo</label>
+                                        <select id="edit-auto-type" title="Tipo" class="form-control" id="type" ng-model="autosCtrl.editAuto.type" ng-options="type for type in autosCtrl.types" required>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-condition">Condición</label>
+                                        <select id="edit-auto-condition" title="Condición" class="form-control" id="condition" ng-model="autosCtrl.editAuto.condition" ng-options="condition for condition in autosCtrl.conditions" required>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+<!--                                 <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-price-venezuela">Precio Venezuela</label>
+                                        <input ng-model="autosCtrl.editAuto.venezuelaPrice" type="number" class="form-control" id="edit-auto-price-venezuela" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-price-ecuador">Precio Ecuador</label>
+                                        <input ng-model="autosCtrl.editAuto.ecuadorPrice" type="number" class="form-control" id="edit-auto-price-ecuador" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-auto-price-peru">Precio Peru</label>
+                                        <input ng-model="autosCtrl.editAuto.peruPrice" type="number" class="form-control" id="edit-auto-price-peru" required>
+                                    </div>
+                                </div> -->
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-auto-base-price">Precio base</label>
+                                        <input ng-model="autosCtrl.editAuto.price" type="number" class="form-control" id="edit-auto-base-price" required>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-auto-reservation-price">Precio de reserva</label>
+                                        <input ng-model="autosCtrl.editAuto.reservationPrice" type="number" class="form-control" id="edit-auto-reservation-price" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="edit-auto-countries">Países</label>
+                                                <select id="edit-auto-countries" title="Países" class="form-control" id="type" ng-model="autosCtrl.country" ng-options="country for country in autosCtrl.countries" ng-change="autosCtrl.onCountrySelected(autosCtrl.editAuto)">
+                                                    <option value="" disabled selected>Selecciona</option> 
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                
+                                        <div class="col-md-6">
+
+                                            <div class="table-responsive">
+
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>País</th>
+                                                            <th>free</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="countryFee in autosCtrl.editAuto.countries">
+
+                                                            <td>{{countryFee.country | capitalize}}</td>
+                                                            <td>
+                                                                <input type="number" ng-model="countryFee.fee" class="form-control" min="0">
+                                                            </td>
+
+                                                            <td>
+                                                                <a href ng-click="autosCtrl.removeCountry(autosCtrl.editAuto, countryFee.country)" ><i class="fa fa-times-circle-o fa-2x colorRed"></i></a>
+                                                            </td>
+           
+
+                                                        </tr>
+                                                    </tbody>
+                                                 </table>   
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-auto-exterior-color">Color exterior</label>
+                                        <input ng-model="autosCtrl.editAuto.exteriorColor" type="text" class="form-control" id="edit-auto-exterior-color" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-auto-interior-color">Color interior</label>
+                                        <input ng-model="autosCtrl.editAuto.interiorColor" type="text" class="form-control" id="edit-auto-interior-color" autocapitalize="none" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="edit-auto-features">Descripción</label>
+                                        <textarea style="height: 120px;" ng-model="autosCtrl.editAuto.features" class="form-control" id="edit-auto-features" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div style="margin:auto; padding-bottom:20px;" class="input-group">
+                                        <p class="text-center">Imagen principal</p>
+
+
+                                        <img ng-hide="autosCtrl.editAuto.newMainImage" style="margin:auto;" class="img-responsive main-image" ng-src="{{autosCtrl.editAuto.mainImage.url}}"/>
+
+                                        <img class="img-responsive" class="img-responsive" style="margin:auto;" ngf-src="autosCtrl.editAuto.newMainImage" />
+
+                                        
+                                        <input type="file" style="margin:auto" ngf-select ng-model="autosCtrl.editAuto.newMainImage" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}"></input>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <p class="text-center">Imagenes descriptivas</p>
+
+                                    <div class="row" ng-repeat="image in autosCtrl.editAuto.images">
+
+                                        <div class="images">
+
+                                            <img class="img-responsive" ng-src="{{image.image.url}}"/>
+
+                                            <div class="images-options text-center">
+
+                                                <button name="button" type="button" class="btn btn-xs btn-danger" ng-click="autosCtrl.deleteImage(image)">Eliminar</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+
+                                    <div class="text-center">
+                                        <p>Nuevas Imagenes <span style="font-style: italic;">(Selecciona una o varias a la vez)</span></p>
+
+                                        <input style="margin:auto" type="file" ngf-select ng-model="autosCtrl.editAuto.imagesFiles" name="imageFiles" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}" ngf-multiple="true"></input>
+
+                                    </div>
+
+
+                                    <div class="row" ng-repeat="image in autosCtrl.editAuto.imagesFiles">
+                                        <div class="images">
+                                            <img class="img-responsive" ngf-src="image"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+   
+                            <div class="col-md-12">
+                                <hr>
+                                <div class="text-center">
+
+                                    <button ng-hide="autosCtrl.editingAuto" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar Cambios</button>
+                                    <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="autosCtrl.editingAuto"></i>
+                                </div>
+                            </div>       
+                        </div>
+
+                    
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- *** End of edit modal *** -->
+
+
+
+
+<!-- *** New modal *** -->
+<div class="modal fade" id="add-new-auto-modal" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <form name="addNewForm" ng-submit="autosCtrl.submitNew()" action="javascript:void(0);">
+
+
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="newAuto">Cargar nuevo carro</h4>
+                </div>
+
+
+                <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="col-md-12 text-center">
+                                    <div class="form-group">
+                                        <p>Estatus</p>
+                                        <label class="switch">
+                                          <input id="new-auto-status" ng-model="autosCtrl.newAuto.active" type="checkbox">
+                                          <div class="slider round"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-auto-make">Marca</label>
+                                        <input ng-model="autosCtrl.newAuto.make" type="text" class="form-control" id="new-auto-make" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-auto-year">Año</label>
+                                        <input ng-model="autosCtrl.newAuto.year" type="number" class="form-control" id="new-auto-year" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-auto-model">Modelo</label>
+                                        <input ng-model="autosCtrl.newAuto.model" type="text" class="form-control" id="new-auto-model" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-auto-model-detail">Modelo Detalle</label>
+                                        <input ng-model="autosCtrl.newAuto.modelDetail" type="text" class="form-control" id="new-auto-model-detail" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-auto-mileage">Millage</label>
+                                        <input ng-model="autosCtrl.newAuto.mileage" type="number" class="form-control" id="new-auto-mileage" required>
+                                    </div>
+                                </div> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-auto-engine">Motor</label>
+                                        <input ng-model="autosCtrl.newAuto.engine" type="text" class="form-control" id="new-auto-engine" autocapitalize="none" required>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-auto-transmission">Transmisión</label>
+                                        <input ng-model="autosCtrl.newAuto.transmission" type="text" class="form-control" id="new-auto-transmission" autocapitalize="none" required>
+                                    </div>
+                                </div>  
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-auto-type">Tipo</label>
+                                        <select id="new-auto-type" title="Tipo" class="form-control" id="type" ng-model="autosCtrl.newAuto.type" ng-options="type for type in autosCtrl.types" required>
+                                            <option value="" disabled selected>Selecciona</option> 
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-auto-condition">Condición</label>
+                                        <select id="new-auto-condition" title="Condición" class="form-control" id="condition" ng-model="autosCtrl.newAuto.condition" ng-options="condition for condition in autosCtrl.conditions" required>
+                                            <option value="" disabled selected>Selecciona</option> 
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="new-auto-base-price">Precio Base</label>
+                                        <input ng-model="autosCtrl.newAuto.venezuelaPrice" type="number" class="form-control" id="new-auto-base-price"required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="new-auto-reservation-price">Precio de reserva</label>
+                                        <input ng-model="autosCtrl.newAuto.reservationPrice" type="number" class="form-control" id="new-auto-reservation-price" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="new-auto-countries">Países</label>
+                                                <select id="new-auto-countries" title="Países" class="form-control" id="type" ng-model="autosCtrl.country" ng-options="country for country in autosCtrl.countries" ng-change="autosCtrl.onCountrySelected(autosCtrl.newAuto)" required>
+                                                    <option value="" disabled selected>Selecciona</option> 
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                
+                                        <div class="col-md-6">
+
+                                            <div class="table-responsive">
+
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>País</th>
+                                                            <th>free</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="countryFee in autosCtrl.newAuto.countries">
+
+                                                            <td>{{countryFee.country | capitalize}}</td>
+                                                            <td>
+                                                                <input type="number" ng-model="countryFee.fee" class="form-control" min="0">
+                                                            </td>
+
+                                                            <td>
+                                                                <a href ng-click="autosCtrl.removeCountry(autosCtrl.newAuto, countryFee.country)" ><i class="fa fa-times-circle-o fa-2x colorRed"></i></a>
+                                                            </td>
+           
+
+                                                        </tr>
+                                                    </tbody>
+                                                 </table>   
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="new-auto-exterior-color">Color exterior</label>
+                                        <input ng-model="autosCtrl.newAuto.exteriorColor" type="text" class="form-control" id="new-auto-exterior-color" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="new-auto-interior-color">Color interior</label>
+                                        <input ng-model="autosCtrl.newAuto.interiorColor" type="text" class="form-control" id="new-auto-interior-color" autocapitalize="none" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="new-auto-features">Descripción</label>
+                                        <textarea style="height: 120px;" ng-model="autosCtrl.newAuto.features" class="form-control" id="new-auto-features" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div style="margin:auto; padding-bottom:20px;" class="input-group">
+                                        <p class="text-center">Selecciona una imagen principal</p>
+
+
+                                        <img ng-hide="autosCtrl.newAuto.newMainImage" style="margin:auto;" class="img-responsive main-image" src=""/>
+
+                                        <img class="img-responsive" class="img-responsive" style="margin:auto;" ngf-src="autosCtrl.newAuto.newMainImage" />
+
+                                        
+                                        <input type="file" style="margin:auto" ngf-select ng-model="autosCtrl.newAuto.newMainImage" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}"></input>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+
+
+                                    <div class="text-center">
+                                        <p>Selecciona imagenes descriptivas <span style="font-style: italic;">(Selecciona una o varias a la vez)</span></p>
+
+                                        <input style="margin:auto" type="file" ngf-select ng-model="autosCtrl.newAuto.imagesFiles" name="imageFiles" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}" ngf-multiple="true"></input>
+
+                                    </div>
+
+
+                                    <div class="row" ng-repeat="image in autosCtrl.newAuto.imagesFiles">
+
+                                        <div class="images">
+
+                                            <img class="img-responsive" ngf-src="image"/>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+ 
+
+                            <div class="col-md-12">
+                                <hr>
+                                <div class="text-center">
+
+                                    <button ng-hide="autosCtrl.creatingAuto" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
+                                    <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="autosCtrl.creatingAuto"></i>
+                                </div>
+                            </div>       
+                        </div>
+
+                    
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- *** End of new modal *** -->
+

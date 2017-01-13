@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<!-- define angular app -->
+<html ng-app="exportatucarroAdmin" ng-controller="MainController as mainCtrl">
+
+    <head>
+
+        <base href="/">
+        <meta charset="utf-8" />
+        <meta name="fragment" content="!">
+        <script src="appAdmin/meta-tags.js"></script>
+        <meta name="robots" content="{{robot}}">
+        <meta name="viewport" content="width=device-width,height=device-height initial-scale=1">
+        <title ng-bind="pageTitle"></title>
+        <meta name="author" content="Leonardo Gedler" />
+        <meta name="description" content="{{pageDescription}}">
+<!--         <link rel="shortcut icon" type="image/x-icon" href="appAdmin/images/exportatucarrofavi.png"/> -->
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!--         <link rel="stylesheet" href="appAdmin/css/bootstrap.min.css"/>  -->
+        <link rel="stylesheet" href="appAdmin/css/bootstrap-social.css"/> 
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+        <link rel='stylesheet' href='appAdmin/css/loading-bar.min.css' type='text/css' media='all' />
+        <link rel="stylesheet" href="appAdmin/css/mystyle.css"/> 
+        <link rel="stylesheet" href="appAdmin/css/animate.min.css">
+        <link rel="stylesheet" href="appAdmin/css/styles.css">
+        <!-- End of CSS --> 
+
+        <!-- Parse, Jquery JavaScrip -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+        <!-- End of Parse, Jquery JavaScrip --> 
+
+        <!-- Angular -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+        <script type="text/javascript" src="appAdmin/js/ui-bootstrap-tpls-2.1.4.min.js"></script>
+        <script type='text/javascript' src='appAdmin/js/loading-bar.min.js'></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+        <script type='text/javascript' src="appAdmin/js/angular-flash.min.js"></script>
+        <script src="appAdmin/keys.js"></script>
+        <script src="appAdmin/app.js"></script>
+        <script src="appAdmin/service.js"></script>
+        <script src="appAdmin/autos/autos.js"></script>
+        <script src="appAdmin/bikes/bikes.js"></script>
+        <script src="appAdmin/tires/tires.js"></script>
+        <script src="appAdmin/users/users.js"></script>
+        <script src="appAdmin/orders/orders.js"></script>
+        <!-- End of Angular -->
+
+        <!-- Angular directives -->
+        <script src="appAdmin/js/ng-file-upload-all.min.js"></script>
+        <script src="appAdmin/js/smart-table.min.js"></script>
+        <!-- End of angular directives -->
+
+        <!-- Scrips -->
+        <script src="appAdmin/js/bootstrap.min.js"></script>
+    	<script src="appAdmin/js/custom.js"></script>
+    	<!-- End of scrips -->
+
+        <!-- Google Analytics -->
+        <script>
+            // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            //   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            //   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            //   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            //     ga('create', 'UA-67321112-1', 'auto');
+            //     ga('require', 'displayfeatures');
+            //     ga('send', 'pageview');
+
+        </script>
+        <!-- End Google Analytics -->
+
+        <!-- Google Analytics Tracking -->
+        <script type="text/javascript">
+            // var _gaq = _gaq || [];
+            // _gaq.push(['_setAccount', 'UA-67321112-1']);
+            // _gaq.push(['_trackPageview']);
+
+            // (function() {
+            //     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            //     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            //     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            // })();
+
+        </script>
+        <!-- End of Google Analytics Tracking -->
+
+        
+        <!-- Schema.org info -->
+        <script type="application/ld+json">
+            {
+              "@context": "http://schema.org",
+              "@type": "Organization",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Miami, USA",
+                "postalCode": "33014",
+                "streetAddress": "5470 NW 161st St. Miami Gardens, FL. 33014 USA"
+              },
+              "email": "contacto@exportatucarro.com",
+              "logo": "http://www.exportatucarro.com/images/logo.png",
+              "url": "http://www.exportatucarro.com/",
+              "name": "Exportatucarro",
+              "telephone": "(305) - 720 - 2470"
+            }
+        </script>
+        <!-- End Schema.org info -->
+    </head>
+
+    <body>
+
+        <!-- *** Custom Icons ***
+        _________________________________________________________ -->
+        <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <symbol id="icon-wheel" viewBox="0 0 64 64">
+                <title>wheel</title>
+                <path class="path1" d="M32 0.64c-17.318 0-31.36 14.042-31.36 31.36s14.042 31.36 31.36 31.36c17.318 0 31.36-14.042 31.36-31.36s-14.042-31.36-31.36-31.36zM32 56.621c-13.581 0-24.621-11.046-24.621-24.621s11.040-24.621 24.621-24.621c13.574 0 24.627 11.046 24.627 24.621s-11.053 24.621-24.627 24.621z"></path>
+                <path class="path2" d="M32 10.189c-12.051 0-21.811 9.766-21.811 21.811s9.766 21.811 21.811 21.811c12.051 0 21.811-9.766 21.811-21.811s-9.76-21.811-21.811-21.811zM47.898 38.765c-0.019-0.013-0.038-0.038-0.051-0.051l-7.904-5.222c0.090-0.486 0.154-0.986 0.154-1.498s-0.058-1.011-0.154-1.498l7.904-5.216c0.019-0.013 0.032-0.038 0.051-0.051 0.883 2.080 1.382 4.365 1.382 6.771 0 2.4-0.499 4.685-1.382 6.765zM45.69 21.498c-0.006 0-0.019 0.006-0.032 0.006l-8.48 4.333c-0.717-0.608-1.536-1.094-2.438-1.421l-0.486-9.498c0-0.013-0.013-0.032-0.013-0.045 4.653 0.614 8.723 3.072 11.45 6.624zM31.994 35.846c-2.125 0-3.846-1.722-3.846-3.846s1.722-3.846 3.846-3.846c2.125 0 3.84 1.722 3.84 3.846 0.006 2.125-1.715 3.846-3.84 3.846zM29.901 14.861c0 0.019-0.013 0.045-0.019 0.064l-0.563 9.478c-0.96 0.339-1.818 0.845-2.573 1.485l-8.493-4.25c-0.013-0.006-0.032-0.006-0.045-0.013 2.758-3.654 6.925-6.189 11.693-6.765zM16.038 25.389c0.013 0.006 0.019 0.026 0.032 0.032l7.974 5.165c-0.077 0.461-0.141 0.928-0.141 1.414s0.064 0.96 0.147 1.421l-7.974 5.165c-0.013 0.006-0.019 0.026-0.032 0.032-0.851-2.042-1.325-4.275-1.325-6.618s0.474-4.57 1.318-6.611zM18.214 42.374c0.013-0.006 0.032-0.006 0.045-0.013l8.493-4.243c0.755 0.646 1.613 1.152 2.573 1.485l0.563 9.478c0 0.019 0.013 0.045 0.013 0.064-4.768-0.582-8.928-3.11-11.686-6.771zM34.246 49.12c0-0.013 0.013-0.026 0.013-0.038l0.493-9.498c0.896-0.333 1.715-0.813 2.438-1.421l8.474 4.333c0.006 0 0.019 0.006 0.026 0.006-2.726 3.552-6.797 6.010-11.443 6.618z"></path>
+                </symbol>
+            </defs>
+        </svg>
+        <!-- *** Custom Icons END *** -->
+
+        <!-- Main Body -->
+        <div ng-show="mainCtrl.isUser()">
+    	   	<div class="header">
+    		     <div class="container">
+    		        <div class="row">
+    		           <div class="col-md-6 col-xs-6">
+        		                <!-- Logo -->
+        		                <div class="logo">
+        		                  <h1><a href="/admin">Admin</a></h1>
+        		                </div>
+    		           </div>
+
+    		           <div class="col-md-6 col-xs-6">
+    		              <div class="log-out pull-right">
+
+                            <div style="padding-top:15px;">
+
+                                <a class="linksWhite" href ng-click="mainCtrl.logOut()">Cerrar sessión <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+
+                            </div>
+    	
+    		              </div>
+    		           </div>
+    		        </div>
+    		     </div>
+
+    		</div>
+
+    		<div class="page-content">
+    			<div class="row">
+
+    				<div class="col-md-2">
+    				  	<div class="sidebar content-box" style="display: block;">
+    		                <ul class="nav">
+    		                    <!-- Main menu -->
+    		                    <li ng-class="{'current': location == '/admin'}"><a href="/"><i class="fa fa-home fa-2x" aria-hidden="true"></i> Dashboard</a>
+                                </li>
+    		                    <li ng-class="{'current': location == '/admin/automoviles'}"><a href="/#!/admin/automoviles"><i class="fa fa-car fa-2x" aria-hidden="true"></i> Carros</a></li>
+    		                    <li ng-class="{'current': location == '/admin/motos'}"><a href="/#!/admin/motos"> <i class="fa fa-motorcycle fa-2x" aria-hidden="true"></i> Motos</a></li>
+                                <li ng-class="{'current': location == '/admin/cauchos'}"><a href="/#!/admin/cauchos"> <svg class="icon icon-wheel"><use xlink:href="#icon-wheel"></use></svg> Cauchos</a></li>
+
+                                <li ng-class="{'current': location == '/admin/ordenes'}"><a href="/#!/admin/ordenes"> <i class="fa fa-money fa-2x" aria-hidden="true"></i> Ordenes</a></li>
+                                <li ng-class="{'current': location == '/admin/usuarios'}"><a href="/#!/admin/usuarios"> <i class="fa fa-users fa-2x" aria-hidden="true"></i> Usuarios</a></li>
+
+    		                </ul>
+    		            </div>
+    				</div>
+
+    				<div class="col-md-10">
+    				  	<div class="row">
+
+    				        <div id="main">
+    				                
+    				            <div id="content" ng-view autoscroll="true"></div>
+    				                    
+    				        </div>
+    				    </div>
+    				</div>        
+    	   		</div>
+        	</div>
+        </div>
+
+
+
+        <!-- Login Body -->
+        <div ng-show="!mainCtrl.isUser()" class="login-body">
+
+        </div>
+
+
+
+        <!-- *** Login modal *** -->
+        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="Login">Admin Login</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form name="loginForm" ng-submit="mainCtrl.loging()" action="javascript:void(0);">
+                            <div class="form-group">
+                                <input ng-model="mainCtrl.loginForm.username" type="email" class="form-control" id="email-modal" placeholder="email" autocapitalize="none" required>
+                            </div>
+                            <div class="form-group">
+                                <input ng-model="mainCtrl.loginForm.pass" type="password" class="form-control" id="password-modal" placeholder="password" autocapitalize="none" required>
+                            </div>
+
+                            <div class="text-center">
+
+                                <button ng-hide="mainCtrl.logingUp" class="btn btn-primary"><i class="fa fa-sign-in"></i> Ingresar</button>
+                                <i class="fa fa-spinner fa-spin fa-3x colorExporta" ng-show="mainCtrl.logingUp"></i>
+                            </div>
+
+                        </form>
+
+                        <div style="margin-top:20px;">
+                            <p class="text-center"><strong>Ingreso solo para administradores!</strong></p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- *** End of Login modal *** -->
+
+
+
+
+
+    </body>
+</html>

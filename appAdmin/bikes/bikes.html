@@ -1,0 +1,544 @@
+
+<div id="bikes" class="content-box-large">
+
+    <h1>Motos <span><a href ng-click="bikesCtrl.openAddNew()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></span></h1>
+
+
+
+    <div style="overflow-x:scroll">
+        <table st-table="bikesCtrl.bikes" st-pipe="bikesCtrl.callServer" class="table table-striped">
+            <thead>
+
+            <tr>
+                <th colspan="1"><h4>Busqueda:</h4></th>
+                <th></th>
+                <th></th>
+                <th><input class="form-control input-table" st-search="make"/></th>
+                <th><input class="form-control input-table" st-search="year"/></th>
+                <th><input class="form-control input-table" st-search="model"/></th>
+
+            </tr>
+
+            <tr>
+                <th></th>
+                <th>Referencia</th>
+                <th st-sort="active">Estatus</th>
+                <th st-sort="make">Marca</th>
+                <th st-sort="year">Año</th>
+                <th st-sort="model">Modelo</th>
+                <th st-sort="modelDetail">Modelo (Detalle)</th>
+                <th st-sort="mileage">Millage</th>
+                <th st-sort="engine">Motor</th>
+                <th st-sort="transmission">Transmision</th>
+                <th st-sort="type">Tipo</th>
+                <th st-sort="condition">Condición</th>
+                <th st-sort="color">Color</th>
+                <th st-sort="reservationPrice">Reserva ($)</th>
+                <th st-sort="price">Precio Base ($)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in bikesCtrl.bikes">
+                <td><input name="button" type="button" value="Editar" class="btn btn-xs btn-primary" ng-click="bikesCtrl.openEdit(row)"/></td>
+                <td>{{row.objectId}}</td>
+                <td class="text-center" ><span ng-show="row.active"><i class="fa fa-check-circle colorGreen fa-2x"></i></span> <span ng-show="!row.active"><i class="fa fa-times-circle-o colorRed fa-2x"></i></span></td>
+                <td>{{row.make | capitalize}}</td>
+                <td>{{row.year}}</td>
+                <td>{{row.model | capitalize}}</td>
+                <td>{{row.modelDetail | capitalize}}</td>
+                <td>{{row.mileage}}</td>
+                <td>{{row.engine}}</td>
+                <td>{{row.transmission}}</td>
+                <td>{{row.type | capitalize}}</td>
+                <td>{{row.condition}}</td>
+                <td>{{row.color | capitalize}}</td>
+                <td>{{row.reservationPrice | number}}</td>
+                <td>{{row.price | number}}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-center" st-pagination="" st-items-by-page="30" colspan="4">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+
+</div>
+
+
+<!-- *** Edit modal *** -->
+<div class="modal fade" id="edit-bike-modal" tabindex="-1" role="dialog" aria-labelledby="Edit" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <form name="editForm" ng-submit="bikesCtrl.submitEdit()" action="javascript:void(0);">
+
+
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="editAuto">Estatus e información de la moto referencia: <strong>{{bikesCtrl.editBike.objectId}}</strong></h4>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="col-md-12 text-center">
+                                    <div class="form-group">
+                                        <p>Estatus</p>
+                                        <label class="switch">
+                                          <input id="edit-bike-status" ng-model="bikesCtrl.editBike.active" type="checkbox">
+                                          <div class="slider round"></div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-bike-make">Marca</label>
+                                        <input ng-model="bikesCtrl.editBike.make" type="text" class="form-control" id="edit-bike-make"autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-bike-year">Año</label>
+                                        <input ng-model="bikesCtrl.editBike.year" type="number" class="form-control" id="edit-bike-year" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-bike-model">Modelo</label>
+                                        <input ng-model="bikesCtrl.editBike.model" type="text" class="form-control" id="edit-bike-model"autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-bike-model-detail">Modelo Detalle</label>
+                                        <input ng-model="bikesCtrl.editBike.modelDetail" type="text" class="form-control" id="edit-bike-model-detail"autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-bike-mileage">Millage</label>
+                                        <input ng-model="bikesCtrl.editBike.mileage" type="number" class="form-control" id="edit-bike-mileage" required>
+                                    </div>
+                                </div> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-bike-engine">Motor</label>
+                                        <input ng-model="bikesCtrl.editBike.engine" type="text" class="form-control" id="edit-bike-engine" autocapitalize="none" required>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-bike-transmission">Transmisión</label>
+                                        <input ng-model="bikesCtrl.editBike.transmission" type="text" class="form-control" id="edit-bike-transmission" autocapitalize="none" required>
+                                    </div>
+                                </div>  
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-bike-type">Tipo</label>
+                                        <select id="edit-bike-type" title="Tipo" class="form-control" id="type" ng-model="bikesCtrl.editBike.type" ng-options="type for type in bikesCtrl.types" required>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-bike-condition">Condición</label>
+                                        <select id="edit-bike-condition" title="Condición" class="form-control" id="condition" ng-model="bikesCtrl.editBike.condition" ng-options="condition for condition in bikesCtrl.conditions" required>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-bike-base-price">Precio base</label>
+                                        <input ng-model="bikesCtrl.editBike.price" type="number" class="form-control" id="edit-auto-base-price" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-bike-reservation-price">Precio de reserva</label>
+                                        <input ng-model="bikesCtrl.editBike.reservationPrice" type="number" class="form-control" id="edit-bike-reservation-price" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="edit-bike-countries">Países</label>
+                                                <select id="edit-bike-countries" title="Países" class="form-control" id="type" ng-model="bikesCtrl.country" ng-options="country for country in bikesCtrl.countries" ng-change="bikesCtrl.onCountrySelected(bikesCtrl.editBike)">
+                                                    <option value="" disabled selected>Selecciona</option> 
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                
+                                        <div class="col-md-6">
+
+                                            <div class="table-responsive">
+
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>País</th>
+                                                            <th>free</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="countryFee in bikesCtrl.editBike.countries">
+
+                                                            <td>{{countryFee.country | capitalize}}</td>
+                                                            <td>
+                                                                <input type="number" ng-model="countryFee.fee" class="form-control" min="0">
+                                                            </td>
+
+                                                            <td>
+                                                                <a href ng-click="bikesCtrl.removeCountry(bikesCtrl.editBike, countryFee.country)" ><i class="fa fa-times-circle-o fa-2x colorRed"></i></a>
+                                                            </td>
+           
+
+                                                        </tr>
+                                                    </tbody>
+                                                 </table>   
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="edit-bike-color">Color</label>
+                                        <input ng-model="bikesCtrl.editBike.color" type="text" class="form-control" id="edit-bike-color" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="edit-bike-features">Descripción</label>
+                                        <textarea style="height: 120px;" ng-model="bikesCtrl.editBike.features" class="form-control" id="edit-bike-features" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div style="margin:auto; padding-bottom:20px;" class="input-group">
+                                        <p class="text-center">Imagen principal</p>
+
+
+                                        <img ng-hide="bikesCtrl.editBike.newMainImage" style="margin:auto;" class="img-responsive main-image" ng-src="{{bikesCtrl.editBike.mainImage.url}}"/>
+
+                                        <img class="img-responsive" class="img-responsive" style="margin:auto;" ngf-src="bikesCtrl.editBike.newMainImage" />
+
+                                        
+                                        <input type="file" style="margin:auto" ngf-select ng-model="bikesCtrl.editBike.newMainImage" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}"></input>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <p class="text-center">Imagenes descriptivas</p>
+
+                                    <div class="row" ng-repeat="image in bikesCtrl.editBike.images">
+
+                                        <div class="images">
+
+                                            <img class="img-responsive" ng-src="{{image.image.url}}"/>
+
+                                            <div class="images-options text-center">
+
+                                                <button name="button" type="button" class="btn btn-xs btn-danger" ng-click="bikesCtrl.deleteImage(image)">Eliminar</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+
+                                    <div class="text-center">
+                                        <p>Nuevas Imagenes <span style="font-style: italic;">(Selecciona una o varias a la vez)</span></p>
+
+                                        <input style="margin:auto" type="file" ngf-select ng-model="bikesCtrl.editBike.imagesFiles" name="imageFiles" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}" ngf-multiple="true"></input>
+
+                                    </div>
+
+
+                                    <div class="row" ng-repeat="image in bikesCtrl.editBike.imagesFiles">
+                                        <div class="images">
+                                            <img class="img-responsive" ngf-src="image"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12">
+                                <hr>
+                                <div class="text-center">
+
+                                    <button ng-hide="bikesCtrl.editingBike" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar Cambios</button>
+                                    <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="bikesCtrl.editingBike"></i>
+                                </div>
+                            </div>       
+                        </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- *** End of edit modal *** -->
+
+
+
+
+<!-- *** New modal *** -->
+<div class="modal fade" id="add-new-bike-modal" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <form name="addNewForm" ng-submit="bikesCtrl.submitNew()" action="javascript:void(0);">
+
+
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="newBike">Cargar Nuevo Mota</h4>
+                </div>
+
+
+                <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="col-md-12 text-center">
+                                    <div class="form-group">
+                                        <p>Estatus</p>
+                                        <label class="switch">
+                                          <input id="new-bike-status" ng-model="bikesCtrl.newBike.active" type="checkbox">
+                                          <div class="slider round"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-bike-make">Marca</label>
+                                        <input ng-model="bikesCtrl.newBike.make" type="text" class="form-control" id="new-bike-make"autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-bike-year">Año</label>
+                                        <input ng-model="bikesCtrl.newBike.year" type="number" class="form-control" id="new-bike-year" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-bike-model">Modelo</label>
+                                        <input ng-model="bikesCtrl.newBike.model" type="text" class="form-control" id="new-bike-model" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-bike-model-detail">Modelo Detalle</label>
+                                        <input ng-model="bikesCtrl.newBike.modelDetail" type="text" class="form-control" id="new-bike-model-detail" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-bike-mileage">Millage</label>
+                                        <input ng-model="bikesCtrl.newBike.mileage" type="number" class="form-control" id="new-bike-mileage" required>
+                                    </div>
+                                </div> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-bike-engine">Motor</label>
+                                        <input ng-model="bikesCtrl.newBike.engine" type="text" class="form-control" id="new-bike-engine" autocapitalize="none" required>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-bike-transmission">Transmisión</label>
+                                        <input ng-model="bikesCtrl.newBike.transmission" type="text" class="form-control" id="new-bike-transmission" autocapitalize="none" required>
+                                    </div>
+                                </div>  
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-bike-type">Tipo</label>
+                                        <select id="new-bike-type" title="Tipo" class="form-control" id="type" ng-model="bikesCtrl.newBike.type" ng-options="type for type in bikesCtrl.types" required>
+                                            <option value="" disabled selected>Selecciona</option> 
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-bike-condition">Condición</label>
+                                        <select id="new-bike-condition" title="Condición" class="form-control" id="condition" ng-model="bikesCtrl.newBike.condition" ng-options="condition for condition in bikesCtrl.conditions" required>
+                                            <option value="" disabled selected>Selecciona</option> 
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="new-bike-base-price">Precio base</label>
+                                        <input ng-model="bikesCtrl.newBike.price" type="number" class="form-control" id="new-bike-base-price"required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="new-bike-reservation-price">Precio de reserva</label>
+                                        <input ng-model="bikesCtrl.newBike.reservationPrice" type="number" class="form-control" id="new-bike-reservation-price" required>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="new-bike-countries">Países</label>
+                                                <select id="new-bike-countries" title="Países" class="form-control" id="type" ng-model="bikesCtrl.country" ng-options="country for country in bikesCtrl.countries" ng-change="bikesCtrl.onCountrySelected(bikesCtrl.newBike)" required>
+                                                    <option value="" disabled selected>Selecciona</option> 
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                
+                                        <div class="col-md-6">
+
+                                            <div class="table-responsive">
+
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>País</th>
+                                                            <th>free</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="countryFee in bikesCtrl.newBike.countries">
+
+                                                            <td>{{countryFee.country | capitalize}}</td>
+                                                            <td>
+                                                                <input type="number" ng-model="countryFee.fee" class="form-control" min="0">
+                                                            </td>
+
+                                                            <td>
+                                                                <a href ng-click="bikesCtrl.removeCountry(bikesCtrl.newBike, countryFee.country)" ><i class="fa fa-times-circle-o fa-2x colorRed"></i></a>
+                                                            </td>
+           
+
+                                                        </tr>
+                                                    </tbody>
+                                                 </table>   
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="new-bike-color">Color</label>
+                                        <input ng-model="bikesCtrl.newBike.color" type="text" class="form-control" id="new-bike-color" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="new-bike-features">Descripción</label>
+                                        <textarea style="height: 120px;" ng-model="bikesCtrl.newBike.features" class="form-control" id="new-bike-features" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div style="margin:auto; padding-bottom:20px;" class="input-group">
+                                        <p class="text-center">Selecciona una imagen principal</p>
+
+
+                                        <img ng-hide="bikesCtrl.newBike.newMainImage" style="margin:auto;" class="img-responsive main-image" src=""/>
+
+                                        <img class="img-responsive" class="img-responsive" style="margin:auto;" ngf-src="bikesCtrl.newBike.newMainImage" />
+
+                                        
+                                        <input type="file" style="margin:auto" ngf-select ng-model="bikesCtrl.newBike.newMainImage" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}"></input>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+
+
+                                    <div class="text-center">
+                                        <p>Selecciona imagenes descriptivas <span style="font-style: italic;">(Selecciona una o varias a la vez)</span></p>
+
+                                        <input style="margin:auto" type="file" ngf-select ng-model="bikesCtrl.newBike.imagesFiles" name="imageFiles" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}" ngf-multiple="true"></input>
+
+                                    </div>
+
+
+                                    <div class="row" ng-repeat="image in bikesCtrl.newBike.imagesFiles">
+
+                                        <div class="images">
+
+                                            <img class="img-responsive" ngf-src="image"/>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+ 
+
+                            <div class="col-md-12">
+                                <hr>
+                                <div class="text-center">
+
+                                    <button ng-hide="bikesCtrl.creatingBike" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
+                                    <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="bikesCtrl.creatingBike"></i>
+                                </div>
+                            </div>       
+                        </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- *** End of new modal *** -->
+

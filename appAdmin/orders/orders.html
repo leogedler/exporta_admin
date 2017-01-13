@@ -1,0 +1,394 @@
+
+<div id="orders" class="content-box-large">
+
+    <h1>Ordenes <span><a href ng-click="ordersCtrl.openAddNew()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></span></h1>
+
+
+
+    <div style="overflow-x:scroll">
+        <table st-table="ordersCtrl.orders" st-pipe="ordersCtrl.callServer" class="table table-striped">
+            <thead>
+
+            <tr>
+                <th colspan="1"><h4>Busqueda:</h4></th>
+                <th></th>
+                <th><input class="form-control input-table" st-search="objectId"/></th>
+                <th><input class="form-control input-table" st-search="userId"/></th>
+                <th><input class="form-control input-table" st-search="userFirstName"/></th>
+                <th><input class="form-control input-table" st-search="userLastName"/></th>
+            </tr>
+
+            <tr>
+                <th></th>
+                <th st-sort="paid">Pagada</th>
+                <th>Referencia</th>
+                <th st-sort="category">Tipo</th>
+                <th st-sort="userId">UserId</th>
+                <th st-sort="userFirstName">Nombre</th>
+                <th st-sort="userLastName">Apellido</th>
+                <th class="text-center">Número de items</th>
+                <th st-sort="destCountry">País de destino</th>
+                <th st-sort="totalOrder">Precio Total ($)</th>
+                <th st-sort="totalPaid">Total Pagado ($)</th>
+                <th st-sort="remainingToPay">Restante por pagar($)</th>
+                <th st-sort="status">Estatus</th>
+                <th st-sort="createdAt">Creada</th>
+                <th st-sort="createdAt">Actualizada</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in ordersCtrl.orders">
+                <td><input name="button" type="button" value="Ver detalles" class="btn btn-xs btn-primary" ng-click="ordersCtrl.openEdit(row.objectId)"/></td>
+                <td class="text-center" ><span ng-show="row.paid"><i class="fa fa-check-circle colorGreen fa-2x"></i></span> <span ng-show="!row.paid"><i class="fa fa-times-circle-o colorRed fa-2x"></i></span></td>
+                <td>{{row.objectId}}</td>
+                <td><span ng-show="row.category == 'vehicle'">Vehículo</span><span ng-show="row.category == 'tires'">Cauchos</span></td>
+                <td>{{row.userId}}</td>
+                <td>{{row.userFirstName | capitalize}}</td>
+                <td>{{row.userLastName | capitalize}}</td>
+                <td class="text-center">{{row.items.length}}</td>
+                <td>{{row.destCountry | capitalize}}</td>
+                <td>{{row.totalOrder | number}}</td>
+                <td>{{row.totalPaid | number}}</td>
+                <td>{{row.remainingToPay | number}}</td>
+                <td>{{row.status | capitalize}}</td>
+                <td>{{row.createdAt | date : "dd/MM/yyyy"}}</td>
+                <td>{{row.updatedAt | date : "dd/MM/yyyy"}}</td>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-center" st-pagination="" st-items-by-page="30" colspan="4">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+
+</div>
+
+
+<!-- *** Edit modal *** -->
+<div class="modal fade" id="edit-order-modal" tabindex="-1" role="dialog" aria-labelledby="Edit" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <form name="editForm" ng-submit="ordersCtrl.submitEdit()" action="javascript:void(0);">
+
+
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="editAuto">Información de la orden: <strong>{{ordersCtrl.editOrder.objectId}}</strong></h4>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <h4>Datos del usuario</h4>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-order-user-firstName">Nombre</label>
+                                        <input ng-model="ordersCtrl.editOrder.userFirstName" type="text" class="form-control" id="edit-order-user-firstName" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-order-user-lastName">Apellido</label>
+                                        <input ng-model="ordersCtrl.editOrder.userLastName" type="text" class="form-control" id="edit-order-user-lastName" autocapitalize="none" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-order-user-email">Email</label>
+                                        <input ng-model="ordersCtrl.editOrder.userEmail" type="email" class="form-control" id="edit-order-user-email" autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-order-user-phone">Teléfono</label>
+                                        <input ng-model="ordersCtrl.editOrder.userPhone" type="text" class="form-control" id="edit-order-user-phone" autocapitalize="none" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="edit-order-user-country">País del usuario</label>
+                                        <select id="edit-order-user-country" title="Estatus" class="form-control" id="country" ng-model="ordersCtrl.editOrder.userCountry" ng-options="country for country in ordersCtrl.countries">
+                                           <option value="" disabled selected>{{ordersCtrl.editOrder.userCountry}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="edit-order-status">Estatus de la orden</label>
+                                        <select id="edit-order-status" title="Estatus" class="form-control" id="status" ng-model="ordersCtrl.editOrder.status" ng-options="status for status in ordersCtrl.statuses">
+                                           <option value="" disabled selected>{{ordersCtrl.editOrder.status}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-12">
+
+                                <hr>
+
+                                <h4>Producto(s) de la orden</h4>
+
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">Productos</th>
+                                                <th ng-show="ordersCtrl.tireItem">Cantidad</th>
+                                                <th ng-show="ordersCtrl.vehicleItem">Color</th>
+                                                <th>Precio base</th>
+                                                <th>País de destino</th>
+                                                <th>Fee</th>
+                                                <th>Precio de reserva</th>
+                                                <th>Total unitario</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="item in ordersCtrl.editOrder.items">
+                                                <td>
+                                                    <img ng-src="{{item.mainImage.url}}" class="img-responsive tableImage" alt="">
+                                                </td>
+                                                <td>
+
+                                                    <div>
+                                                        <span>{{item.make | capitalize}}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span>{{item.model | capitalize}} {{item.modelDetail | capitalize}}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span>{{item.dimensions}}</span>
+                                                    </div>
+
+                                                </td>
+                                                <td ng-show="ordersCtrl.tireItem">{{item.quantity}}</td>
+                                                <td ng-show="ordersCtrl.vehicleItem">{{item.wishColor}}</td>
+                                                <td>${{item.price | number}}</td>
+                                                <td>{{ordersCtrl.editOrder.destCountry}}</td>
+                                                <td>${{item.destFee | number}}</td>
+                                                <td>${{item.reservationPrice | number}}</td>
+                                                <td>${{item.price + item.destFee | number}}</td>
+
+    
+
+<!--                                                 <td>${{item.remainingToPay | number}}</td>
+
+                                                <td><input ng-model="item.paid" type="number" class="form-control" ng-change="ordersCtrl.editProduct(item)" min="0" required></td>
+   <!--                                              <td>${{item.paid | number}}</td> --> 
+                                            </tr>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                 <th colspan="7" class="text-right">Total de la orden</th>
+                                                <th class="colorExporta">${{ordersCtrl.editOrder.totalOrder | number}}</th>
+
+                                            </tr>
+                                            <tr>
+                                                <th colspan="7" class="text-right">Restante por pagar</th>
+                                                <th class="colorRed">${{ordersCtrl.editOrder.remainingToPay | number}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="7" class="text-right">Total pagado $</th>
+                                                <th class="colorRed">
+                                                    <input ng-model="ordersCtrl.editOrder.totalPaid" type="number" class="form-control" min="0" required>
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+
+                                </div>
+                                <!-- /.table-responsive -->
+                            </div>
+
+
+
+                            <div class="col-md-12">
+
+                                <hr>
+
+                                <div class="text-center">
+
+                                    <button ng-hide="ordersCtrl.editingOrder" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar Cambios</button>
+                                    <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="ordersCtrl.editingOrder"></i>
+                                </div>
+                            </div>       
+                        </div>
+
+                    
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- *** End of edit modal *** -->
+
+
+
+
+<!-- *** New modal *** -->
+<div class="modal fade" id="add-new-order-modal" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <form name="addNewForm" ng-submit="ordersCtrl.submitNew()" action="javascript:void(0);">
+
+
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="newTire">Cargar Nuevo Caucho</h4>
+                </div>
+
+
+                <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="colo-md-12 text-center">
+
+                                <div class="form-group">
+                                    <p>Estatus</p>
+                                    <label class="switch">
+                                      <input id="new-tire-status" ng-model="ordersCtrl.newTire.active" type="checkbox">
+                                      <div class="slider round"></div>
+                                    </label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="new-tire-make">Marca</label>
+                                    <input ng-model="ordersCtrl.newTire.make" type="text" class="form-control" id="new-tire-make"autocapitalize="none" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="new-tire-model">Modelo</label>
+                                    <input ng-model="ordersCtrl.newTire.model" type="text" class="form-control" id="new-tire-model"autocapitalize="none" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="new-tire-width">Ancho</label>
+                                    <input ng-model="ordersCtrl.newTire.width" type="number" class="form-control" id="new-tire-width" required>
+                                </div>
+                            </div> 
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="new-tire-height">Sección</label>
+                                    <input ng-model="ordersCtrl.newTire.height" type="number" class="form-control" id="new-tire-height" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="new-tire-rin">Diametro (Rin)</label>
+                                    <input ng-model="ordersCtrl.newTire.diameter" type="number" class="form-control" id="new-tire-rin" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="new-tire-type">Tipo</label>
+                                    <select id="new-tire-type" title="Tipe" class="form-control" id="type" ng-model="ordersCtrl.newTire.type" ng-options="type for type in ordersCtrl.types" required>
+                                        <option value="" disabled selected>Selecciona</option> 
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="new-tire-price">Precio ($)</label>
+                                    <input ng-model="ordersCtrl.newTire.price" type="number" class="form-control" id="new-tire-price" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="new-tire-description">Descripción</label>
+                                    <textarea style="height: 120px;" ng-model="ordersCtrl.newTire.description" class="form-control" id="new-tire-description" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div style="margin:auto; padding-bottom:20px;" class="input-group">
+                                    <p class="text-center">Selecciona una imagen principal</p>
+
+
+                                    <img ng-hide="ordersCtrl.newTire.newMainImage" style="margin:auto;" class="img-responsive main-image" src=""/>
+
+                                    <img class="img-responsive" class="img-responsive" style="margin:auto;" ngf-src="ordersCtrl.newTire.newMainImage" />
+
+                                    
+                                    <input type="file" style="margin:auto" ngf-select ng-model="ordersCtrl.newTire.newMainImage" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}"></input>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+
+
+                                <div class="text-center">
+                                    <p>Selecciona imagenes descriptivas <span style="font-style: italic;">(Selecciona una o varias a la vez)</span></p>
+
+                                    <input style="margin:auto" type="file" ngf-select ng-model="ordersCtrl.newTire.imagesFiles" name="imageFiles" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}" ngf-multiple="true"></input>
+
+                                </div>
+
+
+                                <div class="row" ng-repeat="image in ordersCtrl.newTire.imagesFiles">
+
+                                    <div class="images">
+
+                                        <img class="img-responsive" ngf-src="image"/>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+ 
+
+                            <div class="col-md-12">
+
+                                <hr>
+
+                                <div class="text-center">
+
+                                    <button ng-hide="ordersCtrl.creatingTire" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
+                                    <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="ordersCtrl.creatingTire"></i>
+                                </div>
+                            </div>       
+                        </div>
+
+                    
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- *** End of new modal *** -->
+

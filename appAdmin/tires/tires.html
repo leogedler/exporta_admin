@@ -1,0 +1,463 @@
+
+<div id="tires" class="content-box-large">
+
+    <h1>Cauchos <span><a href ng-click="tiresCtrl.openAddNew()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></span></h1>
+
+
+
+    <div style="overflow-x:scroll">
+        <table st-table="tiresCtrl.tires" st-pipe="tiresCtrl.callServer" class="table table-striped">
+            <thead>
+
+            <tr>
+                <th colspan="1"><h4>Busqueda:</h4></th>
+                <th></th>
+                <th></th>
+                <th><input class="form-control input-table" st-search="make"/></th>
+                <th><input class="form-control input-table" st-search="model"/></th>
+                <th><input class="form-control input-table" st-search="rin"/></th>
+                <th><input class="form-control input-table" st-search="width"/></th>
+                <th><input class="form-control input-table" st-search="height"/></th>
+            </tr>
+
+            <tr>
+                <th></th>
+                <th>Referencia</th>
+                <th>Estatus</th>
+                <th st-sort="make">Marca</th>
+                <th st-sort="model">Modelo</th>
+                <th st-sort="rin">Rin</th>
+                <th st-sort="width">Ancho</th>
+                <th st-sort="height">Sección</th>
+                <th st-sort="diameter">Diametro</th>
+                <th st-sort="dimensions">Dimensiones</th>
+                <th st-sort="type">Tipo</th>
+                <th>Precio ($)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in tiresCtrl.tires">
+                <td><input name="button" type="button" value="Editar" class="btn btn-xs btn-primary" ng-click="tiresCtrl.openEdit(row)"/></td>
+                <td>{{row.objectId}}</td>
+                <td class="text-center" ><span ng-show="row.active"><i class="fa fa-check-circle colorGreen fa-2x"></i></span> <span ng-show="!row.active"><i class="fa fa-times-circle-o colorRed fa-2x"></i></span></td>
+                <td>{{row.make | capitalize}}</td>
+                <td>{{row.model | capitalize}}</td>
+                <td>{{row.rin | capitalize}}</td>
+                <td>{{row.width}}</td>
+                <td>{{row.height}}</td>
+                <td>{{row.diameter}}</td>
+                <td>{{row.dimensions}}</td>
+                <td>{{row.type | capitalize}}</td>
+                <td>{{row.price | number}}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-center" st-pagination="" st-items-by-page="30" colspan="4">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+
+</div>
+
+
+<!-- *** Edit modal *** -->
+<div class="modal fade" id="edit-tire-modal" tabindex="-1" role="dialog" aria-labelledby="Edit" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <form name="editForm" ng-submit="tiresCtrl.submitEdit()" action="javascript:void(0);">
+
+
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="editAuto">Estatus e información del caucho referencia: <strong>{{tiresCtrl.editTire.objectId}}</strong></h4>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="col-md-12 text-center">
+                                    <div class="form-group">
+                                        <p>Estatus</p>
+                                        <label class="switch">
+                                          <input id="edit-tire-status" ng-model="tiresCtrl.editTire.active" type="checkbox">
+                                          <div class="slider round"></div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-tire-make">Marca</label>
+                                        <input ng-model="tiresCtrl.editTire.make" type="text" class="form-control" id="edit-tire-make"autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-tire-model">Modelo</label>
+                                        <input ng-model="tiresCtrl.editTire.model" type="text" class="form-control" id="edit-tire-model"autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-tire-width">Ancho</label>
+                                        <input ng-model="tiresCtrl.editTire.width" type="number" class="form-control" id="edit-tire-width" required>
+                                    </div>
+                                </div> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-tire-height">Sección</label>
+                                        <input ng-model="tiresCtrl.editTire.height" type="number" class="form-control" id="edit-tire-height" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-tire-rin">Diametro (Rin)</label>
+                                        <input ng-model="tiresCtrl.editTire.diameter" type="number" class="form-control" id="edit-tire-rin" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-tire-type">Tipo</label>
+                                        <select id="edit-tire-type" title="Tipo" class="form-control" id="type" ng-model="tiresCtrl.editTire.type" ng-options="type for type in tiresCtrl.types" required>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="edit-tire-base-price">Precio base ($)</label>
+                                        <input ng-model="tiresCtrl.editTire.price" type="number" class="form-control" id="edit-tire-base-price" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="edit-tire-countries">Países</label>
+                                                <select id="edit-tire-countries" title="Países" class="form-control" id="type" ng-model="tiresCtrl.country" ng-options="country for country in tiresCtrl.countries" ng-change="tiresCtrl.onCountrySelected(tiresCtrl.editTire)">
+                                                    <option value="" disabled selected>Selecciona</option> 
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                
+                                        <div class="col-md-6">
+
+                                            <div class="table-responsive">
+
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>País</th>
+                                                            <th>free</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="countryFee in tiresCtrl.editTire.countries">
+
+                                                            <td>{{countryFee.country | capitalize}}</td>
+                                                            <td>
+                                                                <input type="number" ng-model="countryFee.fee" class="form-control" min="0">
+                                                            </td>
+
+                                                            <td>
+                                                                <a href ng-click="tiresCtrl.removeCountry(tiresCtrl.editTire, countryFee.country)" ><i class="fa fa-times-circle-o fa-2x colorRed"></i></a>
+                                                            </td>
+           
+
+                                                        </tr>
+                                                    </tbody>
+                                                 </table>   
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="edit-tire-description">Descripción</label>
+                                        <textarea style="height: 120px;" ng-model="tiresCtrl.editTire.description" class="form-control" id="edit-tire-description" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div style="margin:auto; padding-bottom:20px;" class="input-group">
+                                        <p class="text-center">Imagen principal</p>
+
+
+                                        <img ng-hide="tiresCtrl.editTire.newMainImage" style="margin:auto;" class="img-responsive main-image" ng-src="{{tiresCtrl.editTire.mainImage.url}}"/>
+
+                                        <img class="img-responsive" class="img-responsive" style="margin:auto;" ngf-src="tiresCtrl.editTire.newMainImage" />
+
+                                        
+                                        <input type="file" style="margin:auto" ngf-select ng-model="tiresCtrl.editTire.newMainImage" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}"></input>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <p class="text-center">Imagenes descriptivas</p>
+
+                                    <div class="row" ng-repeat="image in tiresCtrl.editTire.images">
+
+                                        <div class="images">
+
+                                            <img class="img-responsive" ng-src="{{image.image.url}}"/>
+
+                                            <div class="images-options text-center">
+
+                                                <button name="button" type="button" class="btn btn-xs btn-danger" ng-click="tiresCtrl.deleteImage(image)">Eliminar</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+
+                                    <div class="text-center">
+                                        <p>Nuevas Imagenes <span style="font-style: italic;">(Selecciona una o varias a la vez)</span></p>
+
+                                        <input style="margin:auto" type="file" ngf-select ng-model="tiresCtrl.editTire.imagesFiles" name="imageFiles" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}" ngf-multiple="true"></input>
+
+                                    </div>
+
+                                    <div class="row" ng-repeat="image in tiresCtrl.editTire.imagesFiles">
+                                        <div class="images">
+                                            <img class="img-responsive" ngf-src="image"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <hr>
+                                <div class="text-center">
+
+                                    <button ng-hide="tiresCtrl.editingTire" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar Cambios</button>
+                                    <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="tiresCtrl.editingTire"></i>
+                                </div>
+                            </div>       
+                        </div>
+
+                    
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- *** End of edit modal *** -->
+
+
+
+
+<!-- *** New modal *** -->
+<div class="modal fade" id="add-new-tire-modal" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <form name="addNewForm" ng-submit="tiresCtrl.submitNew()" action="javascript:void(0);">
+
+
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="newTire">Cargar Nuevo Caucho</h4>
+                </div>
+
+
+                <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="col-md-12 text-center">
+                                    <div class="form-group">
+                                        <p>Estatus</p>
+                                        <label class="switch">
+                                          <input id="new-tire-status" ng-model="tiresCtrl.newTire.active" type="checkbox">
+                                          <div class="slider round"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="new-tire-make">Marca</label>
+                                        <input ng-model="tiresCtrl.newTire.make" type="text" class="form-control" id="new-tire-make"autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="new-tire-model">Modelo</label>
+                                        <input ng-model="tiresCtrl.newTire.model" type="text" class="form-control" id="new-tire-model"autocapitalize="none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-tire-width">Ancho</label>
+                                        <input ng-model="tiresCtrl.newTire.width" type="number" class="form-control" id="new-tire-width" required>
+                                    </div>
+                                </div> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-tire-height">Sección</label>
+                                        <input ng-model="tiresCtrl.newTire.height" type="number" class="form-control" id="new-tire-height" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-tire-rin">Diametro (Rin)</label>
+                                        <input ng-model="tiresCtrl.newTire.diameter" type="number" class="form-control" id="new-tire-rin" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-tire-type">Tipo</label>
+                                        <select id="new-tire-type" title="Tipo" class="form-control" id="type" ng-model="tiresCtrl.newTire.type" ng-options="type for type in tiresCtrl.types" required>
+                                            <option value="" disabled selected>Selecciona</option> 
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="new-tire-base-price">Precio base ($)</label>
+                                        <input ng-model="tiresCtrl.newTire.price" type="number" class="form-control" id="new-tire-base-price" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="new-tire-countries">Países</label>
+                                                <select id="new-tire-countries" title="Países" class="form-control" id="type" ng-model="tiresCtrl.country" ng-options="country for country in tiresCtrl.countries" ng-change="tiresCtrl.onCountrySelected(tiresCtrl.newTire)">
+                                                    <option value="" disabled selected>Selecciona</option> 
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                
+                                        <div class="col-md-6">
+
+                                            <div class="table-responsive">
+
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>País</th>
+                                                            <th>free</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="countryFee in tiresCtrl.newTire.countries">
+
+                                                            <td>{{countryFee.country | capitalize}}</td>
+                                                            <td>
+                                                                <input type="number" ng-model="countryFee.fee" class="form-control" min="0">
+                                                            </td>
+
+                                                            <td>
+                                                                <a href ng-click="tiresCtrl.removeCountry(tiresCtrl.newTire, countryFee.country)" ><i class="fa fa-times-circle-o fa-2x colorRed"></i></a>
+                                                            </td>
+           
+                                                        </tr>
+                                                    </tbody>
+                                                 </table>   
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="new-tire-description">Descripción</label>
+                                        <textarea style="height: 120px;" ng-model="tiresCtrl.newTire.description" class="form-control" id="new-tire-description" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div style="margin:auto; padding-bottom:20px;" class="input-group">
+                                        <p class="text-center">Selecciona una imagen principal</p>
+
+
+                                        <img ng-hide="tiresCtrl.newTire.newMainImage" style="margin:auto;" class="img-responsive main-image" src=""/>
+
+                                        <img class="img-responsive" class="img-responsive" style="margin:auto;" ngf-src="tiresCtrl.newTire.newMainImage" />
+
+                                        
+                                        <input type="file" style="margin:auto" ngf-select ng-model="tiresCtrl.newTire.newMainImage" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}"></input>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+
+
+                                    <div class="text-center">
+                                        <p>Selecciona imagenes descriptivas <span style="font-style: italic;">(Selecciona una o varias a la vez)</span></p>
+
+                                        <input style="margin:auto" type="file" ngf-select ng-model="tiresCtrl.newTire.imagesFiles" name="imageFiles" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="5MB" ngf-min-height="100" ngf-resize="{width: 600, height: 500}" ngf-multiple="true"></input>
+
+                                    </div>
+
+
+                                    <div class="row" ng-repeat="image in tiresCtrl.newTire.imagesFiles">
+
+                                        <div class="images">
+
+                                            <img class="img-responsive" ngf-src="image"/>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+ 
+
+                            <div class="col-md-12">
+                                <hr>
+                                <div class="text-center">
+
+                                    <button ng-hide="tiresCtrl.creatingTire" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
+                                    <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="tiresCtrl.creatingTire"></i>
+                                </div>
+                            </div>       
+                        </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- *** End of new modal *** -->
+

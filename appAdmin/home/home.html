@@ -1,0 +1,35 @@
+<div class="col-md-6">
+	<div class="content-box-large">
+		<div class="panel-heading">
+			<div class="panel-title">Número de usuarios</div>
+			
+			<div class="panel-options">
+				<a href data-rel="collapse" ng-click="mainCtrl.refreshUsers()"><i class="fa fa-refresh fa-2x" aria-hidden="true"></i></a>
+			</div>
+		</div>
+
+		<div class="panel-body">
+
+			<h2>Usuarios: {{mainCtrl.usersCount}} </h2>
+
+		</div>
+	</div>
+</div>
+
+<div class="col-md-6">
+	<div class="content-box-large">
+		<div class="panel-heading">
+			<div class="panel-title">Número de ordenes</div>
+			
+			<div class="panel-options">
+				<a href data-rel="collapse" ng-click="mainCtrl.refresOrders()"><i class="fa fa-refresh fa-2x" aria-hidden="true"></i></a>
+			</div>
+		</div>
+
+		<div class="panel-body">
+
+			<h2>Ordenes: {{mainCtrl.ordersCount}} </h2>
+
+		</div>
+	</div>
+</div>
