@@ -22,7 +22,8 @@
             <tr>
                 <th></th>
                 <th>Referencia</th>
-                <th st-sort="active">Estatus</th>
+                <th class="text-center" st-sort="active">Estatus</th>
+                <th class="text-center" st-sort="inStock">En stock</th>
                 <th st-sort="make">Marca</th>
                 <th st-sort="year">Año</th>
                 <th st-sort="model">Modelo</th>
@@ -44,6 +45,7 @@
                 <td><input name="button" type="button" value="Editar" class="btn btn-xs btn-primary" ng-click="autosCtrl.openEdit(row)"/></td>
                 <td>{{row.objectId}}</td>
                 <td class="text-center" ><span ng-show="row.active"><i class="fa fa-check-circle colorGreen fa-2x"></i></span> <span ng-show="!row.active"><i class="fa fa-times-circle-o colorRed fa-2x"></i></span></td>
+                <td class="text-center"><span ng-show="row.inStock"><i class="fa fa-check-circle colorGreen fa-2x"></i></span> <span ng-show="!row.inStock"><i class="fa fa-times-circle-o colorRed fa-2x"></i></span></td>
                 <td>{{row.make | capitalize}}</td>
                 <td>{{row.year}}</td>
                 <td>{{row.model | capitalize}}</td>
@@ -79,7 +81,7 @@
         <div class="modal-content">
 
 
-            <form name="editForm" ng-submit="autosCtrl.submitEdit()" action="javascript:void(0);">
+            <form name="editForm" ng-submit="editForm.$valid && autosCtrl.submitEdit()" action="javascript:void(0);">
 
 
 
@@ -266,6 +268,14 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-auto-stock">En stock</label>
+                                            <select id="edit-auto-stock" title="Tipo" class="form-control" id="type" ng-model="autosCtrl.editAuto.inStock" ng-options="option for option in autosCtrl.stockOptions" required>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="edit-auto-features">Descripción</label>
@@ -330,7 +340,7 @@
                                 <hr>
                                 <div class="text-center">
 
-                                    <button ng-hide="autosCtrl.editingAuto" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar Cambios</button>
+                                    <button ng-hide="autosCtrl.editingAuto" class="btn btn-lg btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar Cambios</button>
                                     <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="autosCtrl.editingAuto"></i>
                                 </div>
                             </div>       
@@ -356,7 +366,7 @@
         <div class="modal-content">
 
 
-            <form name="addNewForm" ng-submit="autosCtrl.submitNew()" action="javascript:void(0);">
+            <form name="addNewForm" ng-submit="addNewForm.$valid && autosCtrl.submitNew()" action="javascript:void(0);">
 
 
 
@@ -522,6 +532,14 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="new-auto-stock">En stock</label>
+                                            <select id="new-auto-stock" title="Tipo" class="form-control" id="type" ng-model="autosCtrl.newAuto.inStock" ng-options="option for option in autosCtrl.stockOptions" required>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="new-auto-features">Descripción</label>
@@ -572,7 +590,7 @@
                                 <hr>
                                 <div class="text-center">
 
-                                    <button ng-hide="autosCtrl.creatingAuto" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
+                                    <button ng-hide="autosCtrl.creatingAuto" class="btn btn-lg btn-primary"><i class="fa fa-floppy-o" aria-hidden="true" type="submit"></i> Guardar</button>
                                     <i class="fa fa-spinner fa-spin fa-4x colorExporta" ng-show="autosCtrl.creatingAuto"></i>
                                 </div>
                             </div>       

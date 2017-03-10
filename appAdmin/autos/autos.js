@@ -54,6 +54,12 @@ angular.module('exportatucarroAdmin.autos', ['ngRoute', 'service.module'])
 		'hatchback'
 	];
 
+	// Stock
+	autosCtrl.stockOptions = [
+		true,
+		false
+	];
+
 
 	this.callServer = function(tableState){
 
@@ -156,6 +162,7 @@ angular.module('exportatucarroAdmin.autos', ['ngRoute', 'service.module'])
 		autosCtrl.newCreatedAuto.active = autosCtrl.newAuto.active;
 		autosCtrl.newCreatedAuto.price = autosCtrl.newAuto.price;
 		autosCtrl.newCreatedAuto.countries = autosCtrl.newAuto.countries;
+		autosCtrl.newCreatedAuto.inStock = autosCtrl.newAuto.inStock;
 
 
     	// Saving main image
@@ -226,6 +233,7 @@ angular.module('exportatucarroAdmin.autos', ['ngRoute', 'service.module'])
 		autosCtrl.editedAuto.active = autosCtrl.editAuto.active;
 		autosCtrl.editedAuto.price = autosCtrl.editAuto.price;
 		autosCtrl.editedAuto.countries = autosCtrl.editAuto.countries;
+		autosCtrl.editedAuto.inStock = autosCtrl.editAuto.inStock;
 
 
 

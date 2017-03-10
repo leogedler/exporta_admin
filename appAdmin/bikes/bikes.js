@@ -52,6 +52,12 @@ angular.module('exportatucarroAdmin.bikes', ['ngRoute', 'service.module'])
 		'rally'
 	];
 
+	// Stock
+	bikesCtrl.stockOptions = [
+		true,
+		false
+	];
+
 
 	this.callServer = function(tableState){
 
@@ -153,6 +159,7 @@ angular.module('exportatucarroAdmin.bikes', ['ngRoute', 'service.module'])
 		bikesCtrl.newCreatedBike.active = bikesCtrl.newBike.active;
 		bikesCtrl.newCreatedBike.price = bikesCtrl.newBike.price;
 		bikesCtrl.newCreatedBike.countries = bikesCtrl.newBike.countries;
+		bikesCtrl.newCreatedBike.inStock = bikesCtrl.newBike.inStock;
 
 
     	// Saving main image
@@ -223,6 +230,7 @@ angular.module('exportatucarroAdmin.bikes', ['ngRoute', 'service.module'])
 		bikesCtrl.editedBike.reservationPrice = bikesCtrl.editBike.reservationPrice;
 		bikesCtrl.editedBike.price = bikesCtrl.editBike.price;
 		bikesCtrl.editedBike.countries = bikesCtrl.editBike.countries;
+		bikesCtrl.editedBike.inStock = bikesCtrl.editBike.inStock;
 
 
 

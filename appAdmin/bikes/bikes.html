@@ -23,6 +23,7 @@
                 <th></th>
                 <th>Referencia</th>
                 <th st-sort="active">Estatus</th>
+                <th class="text-center" st-sort="inStock">En stock</th>
                 <th st-sort="make">Marca</th>
                 <th st-sort="year">Año</th>
                 <th st-sort="model">Modelo</th>
@@ -42,6 +43,7 @@
                 <td><input name="button" type="button" value="Editar" class="btn btn-xs btn-primary" ng-click="bikesCtrl.openEdit(row)"/></td>
                 <td>{{row.objectId}}</td>
                 <td class="text-center" ><span ng-show="row.active"><i class="fa fa-check-circle colorGreen fa-2x"></i></span> <span ng-show="!row.active"><i class="fa fa-times-circle-o colorRed fa-2x"></i></span></td>
+                <td class="text-center"><span ng-show="row.inStock"><i class="fa fa-check-circle colorGreen fa-2x"></i></span> <span ng-show="!row.inStock"><i class="fa fa-times-circle-o colorRed fa-2x"></i></span></td>
                 <td>{{row.make | capitalize}}</td>
                 <td>{{row.year}}</td>
                 <td>{{row.model | capitalize}}</td>
@@ -75,7 +77,7 @@
         <div class="modal-content">
 
 
-            <form name="editForm" ng-submit="bikesCtrl.submitEdit()" action="javascript:void(0);">
+            <form name="editForm" ng-submit="editForm.$valid && bikesCtrl.submitEdit()" action="javascript:void(0);">
 
 
 
@@ -227,12 +229,21 @@
 
 
 
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="edit-bike-color">Color</label>
                                         <input ng-model="bikesCtrl.editBike.color" type="text" class="form-control" id="edit-bike-color" autocapitalize="none" required>
                                     </div>
                                 </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="edit-bike-stock">En stock</label>
+                                            <select id="edit-bike-stock" title="Tipo" class="form-control" id="type" ng-model="bikesCtrl.editBike.inStock" ng-options="option for option in bikesCtrl.stockOptions" required>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="edit-bike-features">Descripción</label>
@@ -322,7 +333,7 @@
         <div class="modal-content">
 
 
-            <form name="addNewForm" ng-submit="bikesCtrl.submitNew()" action="javascript:void(0);">
+            <form name="addNewForm" ng-submit="addNewForm.$valid && bikesCtrl.submitNew()" action="javascript:void(0);">
 
 
 
@@ -474,12 +485,20 @@
 
 
 
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="new-bike-color">Color</label>
                                         <input ng-model="bikesCtrl.newBike.color" type="text" class="form-control" id="new-bike-color" autocapitalize="none" required>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="new-bike-stock">En stock</label>
+                                            <select id="new-bike-stock" title="Tipo" class="form-control" id="type" ng-model="bikesCtrl.newBike.inStock" ng-options="option for option in bikesCtrl.stockOptions" required>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="new-bike-features">Descripción</label>

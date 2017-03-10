@@ -51,6 +51,12 @@ angular.module('exportatucarroAdmin.tires', ['ngRoute', 'service.module'])
 		'radial'
 	];
 
+	// Stock
+	tiresCtrl.stockOptions = [
+		true,
+		false
+	];
+
 
 	this.callServer = function(tableState){
 
@@ -160,6 +166,7 @@ angular.module('exportatucarroAdmin.tires', ['ngRoute', 'service.module'])
 		tiresCtrl.newCreatedTire.description = tiresCtrl.newTire.description;
 		tiresCtrl.newCreatedTire.price = tiresCtrl.newTire.price;
 		tiresCtrl.newCreatedTire.countries = tiresCtrl.newCreatedTire.countries;
+		tiresCtrl.newCreatedTire.inStock = tiresCtrl.newCreatedTire.inStock;
 
 
     	// Saving main image
@@ -226,6 +233,7 @@ angular.module('exportatucarroAdmin.tires', ['ngRoute', 'service.module'])
 		tiresCtrl.editedTire.description = tiresCtrl.editTire.description;
 		tiresCtrl.editedTire.price = tiresCtrl.editTire.price;
 		tiresCtrl.editedTire.countries = tiresCtrl.editTire.countries;
+		tiresCtrl.editedTire.inStock = tiresCtrl.editTire.inStock;
 
 
 
